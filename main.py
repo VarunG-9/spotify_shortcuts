@@ -14,10 +14,6 @@ from spotipy.oauth2 import SpotifyOAuth
 
 import pickle
 print("Finished importing libraries.")
-
-
-
-
 current_vol = 69
 def save_vol():
     global current_vol
@@ -41,9 +37,7 @@ def invert_playback():
             resume()
     except:
         print("Lost connection to device")
-        check_connection()
-
-
+    
 def skip():
     wait_for_connection()
     sp.next_track(device_id=None)
