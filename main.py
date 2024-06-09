@@ -1,8 +1,8 @@
 import sys
 
 # Redirect stdout and stderr to a log file
-sys.stdout = open(r'C:\Users\aweclops\Documents\Python\Spotify_Shortcuts\stdout.log', 'w')
-sys.stderr = open(r'C:\Users\aweclops\Documents\Python\Spotify_Shortcuts\stderr.log', 'w')
+#sys.stdout = open(r'C:\Users\aweclops\Documents\Python\Spotify_Shortcuts\stdout.log', 'w')
+#sys.stderr = open(r'C:\Users\aweclops\Documents\Python\Spotify_Shortcuts\stderr.log', 'w')
 
 from time import sleep
 sleep(5)
@@ -11,13 +11,19 @@ import os
 import spotipy
 import keyboard
 from spotipy.oauth2 import SpotifyOAuth
+import os
 
 import pickle
+
 print("Finished importing libraries.")
+
 current_vol = 69
+volume_file_path = os.path.join(os.getenv('APPDATA'), 'volume.pickle')
+                                
+
 def save_vol():
     global current_vol
-    with open(r'C:\Users\aweclops\AppData\Roaming\Spotify\volume.pickle', 'wb') as file:
+    with open(volume_file_path, 'wb') as file:
         pickle.dump(current_vol, file)
 
 def resume():
@@ -76,11 +82,11 @@ def vol_down():
 
 print("Finished defining variables.")
 # Checking if volume file exists, otherwise create.
-path = r'C:\Users\aweclops\AppData\Roaming\Spotify\volume.pickle'
-if os.path.isfile(path):
+
+if os.path.isfile(volume_file_path):
     pass
 else: 
-    f = open(path, "x")
+    f = open(volume_file_path, "x")
     save_vol()
 
 print("checked whether volume file exists.")
@@ -107,12 +113,21 @@ def is_connected():
             return False
 
 def wait_for_connection():
+    """
+    Waits until the Spotify connection is established.
+
+    This function continuously checks the connection status until the Spotify connection is established.
+    It does this by calling the `is_connected` function in a loop until it returns `True`.
+    It also sets the volume to the current volume stored in the volume.pickle file.
+
+    Returns:
+        None
+    """
     while True:
         if is_connected():
             break
         else:
             sleep(7)
-
 
 
 keyboard.add_hotkey('print screen', lambda: invert_playback())
@@ -123,4 +138,6 @@ keyboard.add_hotkey('ctrl+left', lambda: go_back())
 keyboard.add_hotkey('ctrl+up', lambda: vol_up())
 keyboard.add_hotkey('ctrl+down', lambda: vol_down())
 print("added keyboard hotkeys.")
-keyboard.wait()
+while True:
+    sleep(5)
+    wait_for_connection()
