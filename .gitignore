@@ -2,3 +2,6 @@ env
 stderr.log
 stdout.log
 test.py
+__pycache__
+.cache
+executable_build
