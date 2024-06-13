@@ -8,3 +8,4 @@ executable_build
 main.spec
 build
 dist
+main.exe
